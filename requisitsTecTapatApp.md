@@ -1,4 +1,4 @@
-# Requisits Tècnics tapaApp
+# Requisits Tècnics TapatApp
 
 ## Arquitectura
 

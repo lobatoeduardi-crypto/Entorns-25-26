@@ -1,0 +1,16 @@
+flowchart LR
+    subgraph Cliente
+        V[Vista - Input Nom]
+        DC[DaoClient - getUserName]
+    end
+
+    subgraph Servidor
+        WS[WebService - getUserByName]
+        DAO[Dao - getUserByName]
+        DATA[(List Data Users)]
+    end
+
+    V <--> DC
+    DC -- HTTP --> WS
+    WS <--> DAO
+    DAO <--> DATA

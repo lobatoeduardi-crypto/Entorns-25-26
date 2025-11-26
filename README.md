@@ -18,4 +18,4 @@ Aqui configurem VSCode
 Connectar Client / Servidor.
 Consultar dades d'usuari per nom.
 
-[Diagrama d'arquitectura prototip 1] (chats/diagramaprototip1.mermaid)
+[Diagrama d'arquitectura prototip 1](charts/diagramaprototip1.mermaid)

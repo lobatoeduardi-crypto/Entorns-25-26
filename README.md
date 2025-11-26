@@ -5,6 +5,10 @@ Entorns de Desenvolupament 25-26
 
 [Requisits Funcionals TapatApp](requisitsFuncTapaApp.md)
 
+## Requisits Tècnics TapatApp
+
+[Requisits Tècnics TapatApp](requisitsTecTapatApp.md)
+
 ## Configuracio Github VsCode 
 
 Aqui configurem VSCode 

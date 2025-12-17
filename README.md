@@ -20,7 +20,7 @@ Consultar dades d'usuari per nom.
 
 [Diagrama d'arquitectura prototip 1](charts/diagramaprototip1.mermaid) 
 
-# End-Points WebService
+## End-Points WebService
 
 Definició del En-point del WebService: 
 
@@ -28,7 +28,4 @@ URL Server desenvolupament: http://localhost:5000/
 
 | URL | Method | Paràmetres | Descripció | Output |
 |--------------|--------------|--------------|----------|----------|
-| /user       | GET        | username <String> obligatori | Retornem la informació
-de   |{ "code_response=1, descripcio="", name="Gustavo Lloris",
-username="flloris",passwoprd="12345", rol="tutor", email="glloris@xtec.
-cat"}  |
+| /user   | GET    | username <String> obligatori | Retornem la informació   de    | { "code_response=1, descripcio="", name="Gustavo Lloris", username="glloris",passwoprd="12345", rol="tutor", email="glloris@xtec.cat"}

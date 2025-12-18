@@ -23,6 +23,10 @@ class UserDao:
     def __init__(self):
         self.users=users
     def getUserByUsername(self,username):
+        # user = none OR null
+        # recorrer tota la llista
+            # Comprovar que el username == username de la llista
+            # Si trobat Sortim
 
         return "TO-DO"
 

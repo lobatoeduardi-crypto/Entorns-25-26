@@ -1,0 +1,48 @@
+import requests
+
+class User:
+    def __init__(self,username, nom, password, email, rol):
+        self.username=username
+        self.nom=nom
+        self.password=password
+        self.email=email
+        self.rol=rol
+
+    def __str__(self):
+        print(self.nom)
+
+class daoUserClient: 
+    def getUserByUsername(self, username):
+        # Petició Http al WebService (request)
+        response = requests.get(f'http://localhost:5000/user?username={username}')
+        # Si la petició OK code response == 200
+        if response.status_code == 200:
+            # Obtener json
+            user_data_raw = response.json()
+            print(user_data_raw)
+            # Crear objecte User si ha trobat
+            if 'msg' in user_data_raw.keys():
+                return None
+            # Si no ha trobat retornar None
+            else:
+                user=User(user_data_raw['username'], user_data_raw['nom'],
+                          user_data_raw['password'], user_data_raw['email'], 
+                          user_data_raw['rol'])
+                return user
+            
+        return None
+    
+class ViewConsole:
+    def getInputUsername():
+        #TO-DO
+        return None
+    def showUserInfo(username):
+        #TO-DO
+        return None
+    
+
+daoUserClient = daoUserClient()
+u=daoUserClient.getUserByUsername("rob")
+print(u)
+u=daoUserClient.getUserByUsername("NOTEXIST")
+print(u)

@@ -14,12 +14,11 @@ class User:
 class daoUserClient: 
     def getUserByUsername(self, username):
         # Petició Http al WebService (request)
-        response = requests.get(f'http://localhost:5000/user?username={username}')
+        response = requests.get("http://localhost:5000/user?username" + username)
         # Si la petició OK code response == 200
         if response.status_code == 200:
             # Obtener json
             user_data_raw = response.json()
-            print(user_data_raw)
             # Crear objecte User si ha trobat
             if 'msg' in user_data_raw.keys():
                 return None

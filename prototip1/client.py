@@ -9,12 +9,12 @@ class User:
         self.rol=rol
 
     def __str__(self):
-        print(self.nom)
+        return (self.nom + " " + self.email + " " + self.rol)
 
 class daoUserClient: 
     def getUserByUsername(self, username):
         # Petició Http al WebService (request)
-        response = requests.get("http://localhost:5000/user?username" + username)
+        response = requests.get("http://localhost:5000/user?username=" + username)
         # Si la petició OK code response == 200
         if response.status_code == 200:
             # Obtener json
@@ -40,8 +40,35 @@ class ViewConsole:
         return None
     
 
-daoUserClient = daoUserClient()
+'''daoUserClient = daoUserClient()
 u=daoUserClient.getUserByUsername("rob")
-print(u)
+print(u.nom, u.email, u.rol)
 u=daoUserClient.getUserByUsername("NOTEXIST")
-print(u)
+print(u)'''
+
+# TO-DO Menú veure tots els usuaris, consultar usuari, add usuari, eliminar usuari
+
+class ViewConsole:
+
+    @staticmethod
+    def pedirUsuario():
+        return input("Usuario: ")
+
+    @staticmethod
+    def mostrarResultado(user):
+        if user is None:
+            print("No encontrado")
+        else:
+            print("Encontrado:", user.nom)
+
+dao = daoUserClient()
+
+username = ViewConsole.pedirUsuario()
+user = dao.getUserByUsername(username)
+
+ViewConsole.mostrarResultado(user)
+
+
+
+
+

@@ -1,0 +1,49 @@
+classDiagram
+    class Usuario {
+        +String nombre
+        +String email
+        +String contrasena
+        +registrar()
+        +iniciarSesion()
+        +cerrarSesion()
+    }
+
+    class Cliente {
+        +List entradasCompradas
+        +buscarEvento()
+        +comprarEntrada()
+        +cancelarReserva()
+    }
+
+    class Administrador {
+        +int nivelPermiso
+        +crearEvento()
+        +modificarEvento()
+        +eliminarEvento()
+    }
+
+    class Evento {
+        +String nombre
+        +String descripcion
+        +Date fecha
+        +String ubicacion
+        +int entradasDisponibles
+        +actualizarStock()
+        +obtenerInfo()
+        +generarInforme()
+    }
+
+    class Entrada {
+        +String idTicket
+        +double precio
+        +String estado
+        +validarCodigo()
+        +cambiarEstado()
+        +asignarPropietario()
+    }
+
+    Usuario <|-- Cliente : Herencia
+    Usuario <|-- Administrador : Herencia
+    Administrador "1" -- "*" Evento : gestiona
+    Evento "1" *-- "*" Entrada : contiene
+    Cliente "1" -- "*" Entrada : compra

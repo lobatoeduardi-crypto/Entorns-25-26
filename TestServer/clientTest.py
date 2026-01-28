@@ -6,10 +6,10 @@ response = requests.get(url)
 
 
 if response.status_code == 200:
-    print("✅ Èxit!")
+    print(" Èxit!")
     print(response.text)
 else:
-    print(f"❌ Error {response.status_code}")
+    print(f" Error {response.status_code}")
 
 print("Petició POST: http://localhost:5000/sumar")
 # URL del endpoint Flask
@@ -27,11 +27,11 @@ try:
 
     # Comprobar el código de estado
     if respuesta.status_code == 200:
-        print("✅ Respuesta correcta:")
+        print(" Respuesta correcta:")
         print(respuesta.json())
     else:
-        print(f"⚠️ Error {respuesta.status_code}: {respuesta.text}")
+        print(f" Error {respuesta.status_code}: {respuesta.text}")
 
 
 except requests.exceptions.RequestException as e:
-    print(f"❌ Error en la conexión: {e}")
+    print(f" Error en la conexión: {e}")

@@ -74,6 +74,7 @@ relation_user_child = [
     {"user_id": 2, "child_id": 2, "rol_id": 2}
 ]
 
+child_ids = [r['child_id'] for r  in relation_user_child if r['user_id'] == 1]
 roles = [
     Role(id=1, type_rol='Admin'),
     Role(id=2, type_rol='Tutor Mare Pare'),

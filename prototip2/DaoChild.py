@@ -1,51 +1,16 @@
-from flask import Flask, jsonify, request
-
-app = Flask(__name__)
-
-
-class Child:
-    def __init__(self, name, age, parent_username):
-        self.name = name
-        self.age = age
-        self.parent_username = parent_username
-    
-    def to_dict(self):
-        return {"name": self.name, "age": self.age, "parent": self.parent_username}
-
-
-children = [
-    Child("Pedro", 5, "rob"),
-    Child("Ana", 7, "rob"),
-    Child("Luis", 6, "john"),
-    Child("Maria", 8, "maria")
-]
-
-class ChildDao:
+class ChildDAO:
     def __init__(self):
-        self.children = children
-    
-    def getChildrenByUsername(self, username):
-        # Devuelve solo los hijos del usuario
-        return [c.to_dict() for c in self.children if c.parent_username == username]
-    
-    def getAllChildren(self):
-        # Devuelve todos los hijos
-        return [c.to_dict() for c in self.children]
+        self.childs = children
+        self.relation_user_child = relation_user_child
 
+    def getChilds(self, user): 
+        # Get IDs from relations
+        child_ids = {r['child_id'] 
+                     for r in self.relation_user_child if r['user_id'] == user.id}
+        # Return Child objects
+        return [c.__dict__ for c in self.childs if c.id in child_ids]
 
-child_dao = ChildDao()
-
-@app.route('/children', methods=['GET'])
-def children_by_user():
-    username = request.args.get("username", default="")
-    if username:
-        children_list = child_dao.getChildrenByUsername(username)
-        return jsonify(children_list)
-    return jsonify({"msg": "Falta parámetro username"}), 400
-
-@app.route('/allchildren', methods=['GET'])
-def all_children():
-    return jsonify(child_dao.getAllChildren())
-
-if __name__ == '__main__':
-    app.run(debug=True)
+cDao = ChildDAO()
+u=User(id=1, username="", password="", email="", idrole=1, token="")
+listChilds=cDao.getChilds(u)
+print(listChilds)

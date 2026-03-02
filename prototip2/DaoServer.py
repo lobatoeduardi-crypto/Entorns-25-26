@@ -38,7 +38,7 @@ class ChildDAO:
         return [c.__dict__ for c in self.childs if c.id in child_ids]
 
 cDao = ChildDAO()
-u=User(id=1, username="", password="", email="", idrole=1, token="")
+u=User(id=1, username="", password="", email="", idrole=1)
 listChilds=cDao.getChilds(u)
 print(listChilds)
 

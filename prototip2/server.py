@@ -51,8 +51,6 @@ def login():
         )
     return jsonify(asdict(response)),200
 
-
-    
 @app.route('/child', methods=['POST'])
 def child():
     data = request.get_json()
@@ -62,14 +60,16 @@ def child():
         coderesponse="-1",
         data=""  
     )
-    if(not user_id and not user_id.is_integer): #validacio dades entrada
+    if(not user_id): # validacio dades entrada
         return jsonify(asdict(response)),400
 
     user_id=int(user_id)
-    u=User(id=user_id, username="", password="", email="", idrole=1, token="")
-    l1stChilds=childDao.getChilds(u)
+    # Eliminado el parámetro token que causaba el TypeError
+    u=User(id=user_id, username="", password="", email="", idrole=1)
+    # Corregido nombre de variable (listChilds con 'i')
+    listChilds=childDao.getChilds(u)
     response.coderesponse="1"
-    response.msg=len(listChilds)
+    response.msg=str(len(listChilds))
     response.data=listChilds
     return jsonify(asdict(response)),200
 

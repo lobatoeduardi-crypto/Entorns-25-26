@@ -7,7 +7,7 @@ class ViewConsole:
             option=input("Enter Option: ")
             if(option.isdigit):
                 optionInt=int(option)
-                if(option >= 1 and option <= 3):
+                if(option >= 1 and option <= 2):
                     return optionInt
                 
             print("Option not valid")

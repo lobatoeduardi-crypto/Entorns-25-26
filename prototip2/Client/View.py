@@ -10,7 +10,7 @@ class ViewConsole:
                 if(option >= 1 and option <= 2):
                     return optionInt
                 
-            print("Option not valid")
+            print("Error, Introdueix una opció correcta")
             
     def viewGeneral(self):
         option=-1

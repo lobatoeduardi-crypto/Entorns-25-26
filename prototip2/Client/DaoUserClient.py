@@ -41,10 +41,11 @@ class DaoUserClient:
         except:
             return []
         
-daoClient=DaoUserClient()
-user = User("", "mare", "12345", "", "")
-resposta=daoClient.login(user)
-print(resposta)
+if __name__ == "__main__":
+    daoClient = DaoUserClient()
+    user = User("", "mare", "12345", "", "")
+    resposta = daoClient.login(user)
+    print(resposta)
         
         
 '''Servei Login

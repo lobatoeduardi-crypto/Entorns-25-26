@@ -2,7 +2,6 @@ from dadesServer import *
 from dataclasses import dataclass, asdict
 from flask import jsonify
 
-
 class UserDAO:
     def __init__(self):
         self.users = users
@@ -41,9 +40,6 @@ cDao = ChildDAO()
 u=User(id=1, username="", password="", email="", idrole=1)
 listChilds=cDao.getChilds(u)
 print(listChilds)
-
-
-
 
 #####################################################
 #  Test / Proves Codi per veure funcionament 

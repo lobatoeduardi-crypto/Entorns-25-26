@@ -14,7 +14,6 @@ class DaoUserClient:
                 res_json = response.json()
                 
                 if str(res_json.get("coderesponse")) == '1':
-                    # ENTRAR EN LA CAJA 'data'
                     u_data = res_json.get("data") 
                     return User(
                         u_data.get("id"),
@@ -27,10 +26,9 @@ class DaoUserClient:
         except:
             return None
 
-    # ESTA ES LA FUNCIÓN QUE TE DABA EL ERROR ROJO
     def get_childs(self, user_id):
         URL = self.base_URL + "/child"
-        payload = {"id_user": user_id} # Tal como pide tu server.py
+        payload = {"id_user": user_id}
         try:
             response = requests.post(URL, json=payload)
             if response.status_code == 200:

@@ -54,7 +54,6 @@ class ViewConsole:
             print("No s'han trobat nens per a aquest usuari.")
         else:
             for c in childs:
-                # 'child_name' es el nombre que pusiste en dadesServer.py
                 print(f"ID: {c.get('id')} | Nom: {c.get('child_name')} | Dorm: {c.get('sleep_average')}h")
             
     def viewUser(self, user):
@@ -70,10 +69,6 @@ if __name__ == "__main__":
     viewConsole=ViewConsole()
     
     viewConsole.viewGeneral()
-    
-    
-        
-    
     
         #DaouserClient ha de fer login
         #Depennt de la resposta va a Child o User Not Authenticated

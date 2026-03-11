@@ -9,7 +9,6 @@ class ApiResponse():
     coderesponse: str
     data: list
 
-# Instantiate DAO
 userDao=UserDAO()
 childDao=ChildDAO()
 
@@ -27,9 +26,8 @@ def getusers():
 
 @app.route('/login', methods=['POST'])
 def login():
-    # Existing username/password login
     data = request.get_json()
-    identifier = data.get('username')  # username or email
+    identifier = data.get('username') 
     password = data.get('password')
     user = userDao.login(identifier, password)
     response = ApiResponse(
@@ -54,13 +52,13 @@ def login():
 @app.route('/child', methods=['POST'])
 def child():
     data = request.get_json()
-    user_id = data.get('id_user') # id_user
+    user_id = data.get('id_user') 
     response = ApiResponse(
         msg="Child",
         coderesponse="-1",
         data=""  
     )
-    if(not user_id): # validacio dades entrada
+    if(not user_id): 
         return jsonify(asdict(response)),400
 
     user_id=int(user_id)

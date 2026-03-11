@@ -1,34 +1,50 @@
 import requests
-from User import *
-from flask import jsonify
+from User import User
 
 class DaoUserClient:
     base_URL = "http://localhost:5000"
     
     def login(self, user):
-        #user.username
-        #user.password
-        #Agafo username i password del Objecte User
-        #Validacio parametres
-        #TO-DO
-        #Peticio HTTP al WebService/login
-        URL_peticio=self.base_URL + "/login"
-        params_POST = {
-            "username": user.username,
-            "password": user.password
-        }
-        response = requests.post(URL_peticio, json=params_POST)
-        if response.status_code == 200:
-            user_data_raw = response.json()
-            code_response = user_data_raw["coderesponse"]
-            if code_response == '1': #Usuari Validat (self, id, username, password, email, idrole, token)
-                user=User(user_data_raw["id"],user_data_raw["username"]
-                      ,"",user_data_raw["email"]
-                      ,user_data_raw["idrole"], user_data_raw["token"])
-            else:
-                return None
-        else:
+        URL_peticio = self.base_URL + "/login"
+        params_POST = {"username": user.username, "password": user.password}
+        
+        try:
+            response = requests.post(URL_peticio, json=params_POST)
+            if response.status_code == 200:
+                res_json = response.json()
+                
+                if str(res_json.get("coderesponse")) == '1':
+                    # ENTRAR EN LA CAJA 'data'
+                    u_data = res_json.get("data") 
+                    return User(
+                        u_data.get("id"),
+                        u_data.get("username"),
+                        "", 
+                        u_data.get("email"),
+                        u_data.get("idrole")
+                    )
             return None
+        except:
+            return None
+
+    # ESTA ES LA FUNCIÓN QUE TE DABA EL ERROR ROJO
+    def get_childs(self, user_id):
+        URL = self.base_URL + "/child"
+        payload = {"id_user": user_id} # Tal como pide tu server.py
+        try:
+            response = requests.post(URL, json=payload)
+            if response.status_code == 200:
+                res_json = response.json()
+                # Devolvemos la lista de niños que está en 'data'
+                return res_json.get("data", [])
+            return []
+        except:
+            return []
+        
+daoClient=DaoUserClient()
+user = User("", "mare", "12345", "", "")
+resposta=daoClient.login(user)
+print(resposta)
         
         
 '''Servei Login

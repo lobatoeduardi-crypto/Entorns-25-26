@@ -64,9 +64,7 @@ def child():
         return jsonify(asdict(response)),400
 
     user_id=int(user_id)
-    # Eliminado el parámetro token que causaba el TypeError
     u=User(id=user_id, username="", password="", email="", idrole=1)
-    # Corregido nombre de variable (listChilds con 'i')
     listChilds=childDao.getChilds(u)
     response.coderesponse="1"
     response.msg=str(len(listChilds))

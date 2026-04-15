@@ -1,19 +1,29 @@
-# Caso de Uso Textual: VIEWCHILD
+# [CU-02] Visualizar Childs
 
-**Actor principal:** Tutor, Cuidador y Administrador
+| Campo | Detalle |
+| :--- | :--- |
+| **Descripción** | El usuario autenticado solicita ver la lista de niños a su cargo. |
+| **Actores** | Tutor, Cuidador, Administrador |
+| **Precondiciones** | El usuario debe tener un token de sesión válido (estar logueado). |
+| **Postcondiciones** | Se muestra en pantalla la información detallada de los niños asociados. |
 
-**Descripción:** Acceso a recurso protegido para ver los datos de los niños (Childs).
+### Secuencia Normal
+| # | Acción (actor) | Reacción (sistema) |
+| :--- | :--- | :--- |
+| 1 | El usuario pulsa en "Ver lista de niños". | El sistema envía petición GET con el Token en el header. |
+| 2 | | El servidor valida el token y busca los datos en la BBDD. |
+| 3 | | El sistema recibe el JSON con los datos y los renderiza en la vista. |
 
-**Precondición:** El usuario debe estar Autenticado con un token válido.
+### Excepciones
+| # | Acción (actor) | Reacción (sistema) |
+| :--- | :--- | :--- |
+| p | El token ha expirado. | El sistema devuelve error **403 Forbidden** y redirige al Login. |
 
-**Postcondición:** El sistema muestra la información de los niños asociados al usuario.
-
-**Flujo principal:**
-1. El usuario solicita acceder a "Childs".
-2. El sistema envía la petición junto con el Token de seguridad.
-3. El servidor valida que el Token sea correcto y no haya expirado.
-4. El servidor recupera los datos de la BBDD.
-5. El sistema muestra la lista de niños al usuario.
-
-**Flujos alternativos:**
-* **Token inválido:** Si el token no es correcto, el servidor devuelve un error y deniega el acceso.
+### Otros Datos
+| Campo | Detalle |
+| :--- | :--- |
+| **Rendimiento** | La carga de la lista no debe superar los 3 segundos. |
+| **Frecuencia** | Se espera una media de 10 veces al día por usuario. |
+| **Importancia** | Importante |
+| **Urgencia** | Hay presión |
+| **Comentarios** | Los datos mostrados dependen estrictamente de los permisos del usuario. |

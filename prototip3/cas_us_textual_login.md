@@ -1,22 +1,30 @@
-### La descripción detallada en texto del proceso de entrada.
+# [CU-01] Autenticación de Usuario (Login)
 
-```markdown
-# Caso de Uso Textual: LOGIN
+| Campo | Detalle |
+| :--- | :--- |
+| **Descripción** | El usuario introduce sus credenciales para obtener acceso al sistema y un token de seguridad. |
+| **Actores** | Tutor, Cuidador, Administrador |
+| **Precondiciones** | El usuario debe estar registrado previamente en la base de datos. |
+| **Postcondiciones** | El usuario queda autenticado y el sistema genera un token de sesión válido. |
 
-**Actor principal:** Tutor, Cuidador y Administrador
+### Secuencia Normal
+| # | Acción (actor) | Reacción (sistema) |
+| :--- | :--- | :--- |
+| 1 | El usuario introduce `username` y `password`. | El sistema recibe los datos y los envía al servidor. |
+| 2 | | El servidor valida las credenciales contra la BBDD. |
+| 3 | | El servidor genera un token y lo almacena. |
+| 4 | | El sistema devuelve el token y permite el acceso. |
 
-**Descripción:** Permite al usuario autenticarse mediante credenciales.
+### Excepciones
+| # | Acción (actor) | Reacción (sistema) |
+| :--- | :--- | :--- |
+| p | El usuario introduce datos incorrectos. | El sistema devuelve error **401 Unauthorized** y pide reintentar. |
 
-**Precondición:** El usuario debe estar Registrado.
-
-**Postcondición:** El usuario queda autenticado con un token válido.
-
-**Flujo principal:**
-1. El usuario envía `username` y `password`.
-2. El servidor valida las credenciales.
-3. El servidor genera un token.
-4. El token se almacena en la BBDD.
-5. El servidor devuelve al cliente el token y datos del usuario.
-
-**Flujos alternativos:**
-* **Error de autenticación:** Si las credenciales son incorrectas, se devuelve un error **401 Unauthorized**.
+### Otros Datos
+| Campo | Detalle |
+| :--- | :--- |
+| **Rendimiento** | La validación debe realizarse en un máximo de 2 segundos. |
+| **Frecuencia** | Se espera una media de 5 veces al día por usuario. |
+| **Importancia** | Vital |
+| **Urgencia** | Inmediatamente |
+| **Comentarios** | Es el punto de entrada obligatorio para cualquier otra acción. |

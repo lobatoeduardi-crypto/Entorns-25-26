@@ -1,0 +1,13 @@
+sequenceDiagram
+    title Login Token
+    Client->>Server: Request HTTPS Login/ method POST, params: username/password
+    Server ->> BBDD: Generate Token for user and storage in table User
+    Server-->>Client: If Login OK Generate Token, Respondse HTTPS Body (Json) Information Usuari i Token
+
+    Client ->>Server: Request HTTPS child/ Header TokenUserA
+    Server->>BBDD: Validate TokenUserA/ UserA in BBDD
+    Server-->>Client: If validate Token Ok, Response HTTPS Body (Json) Informacio Childs of UserA
+
+    Client ->>Server: Request HTTPS child/ Header TokenUserB
+    Server->>BBDD: TokenUserB don't exists in BBDD
+    Server-->>Client: Response HTTPS Body (Json) Error: Authenticated Service

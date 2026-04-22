@@ -64,6 +64,23 @@ class UserDAO:
         data=username + milliseconds
         hash_object = hashlib.sha256(data.encode('utf-8'))
         return hash_object.hexdigest() + ""
+    
+    def getChildrenByToken(self, token):
+        con = self.connectBBDD()
+        cursor = con.cursor(dictionary=True)
+        
+        query = """
+        SELECT c.* FROM Child c
+        INNER JOIN RelationUserChild ruc ON c.id = ruc.child_id
+        INNER JOIN User u ON ruc.user_id = u.id
+        WHERE u.token = %s
+        """
+        
+        cursor.execute(query, (token,))
+        result = cursor.fetchall()
+        cursor.close()
+        con.close()
+        return result
 
 dao = UserDAO()
 u=dao.login("mare", "mare")

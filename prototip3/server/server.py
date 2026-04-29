@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
+from DaoServer import UserDAO,ChildDAO
 from dataclasses import dataclass, asdict
-from DaoServer import UserDAO, ChildDAO
 
 @dataclass
 class ApiResponse():
@@ -9,26 +9,27 @@ class ApiResponse():
     data: list
 
 # Instantiate DAO
-userDao = UserDAO()
-childDao = ChildDAO()
+userDao=UserDAO()
+childDao=ChildDAO()
 
 app = Flask(__name__)
-
 
 @app.route('/login', methods=['POST'])
 def login():
     # Token validation if exists
+    #print(request.headers)
     token=request.headers.get("api-token")
+    #print("Token:" , token)
     user=None
     if(token):
-        # comprobar que el token existeix a un usuari
+        # comprovar que el token existeix a un usuari
         user=userDao.getUserByToken(token)
     else:
         data = request.get_json()
-        identifier = data.get('username') # Username or email
+        identifier = data.get('username')  # username or email
         password = data.get('password')
         user = userDao.login(identifier, password)
-        
+    
     if user:
         response = ApiResponse(
             msg="Authenticated",
@@ -41,52 +42,32 @@ def login():
             coderesponse="0",
             data=""
         )
-    return jsonify(asdict(response)), 200
-
-@app.route('/getchilds', methods=['POST'])
-def get_childs():
-    token = request.args.get('token')
-    childs = userDao.getChildrenByToken(token)
-    
-    if childs:
-        response = ApiResponse(
-            msg="Children found",
-            coderesponse="1",
-            data=childs
-        )
-    else:
-        response = ApiResponse(
-            msg="No children found or invalid token",
-            coderesponse="0",
-            data=[]
-        )
-        
-    return jsonify(asdict(response)), 200
+    return jsonify(asdict(response)),200
 
 @app.route('/child', methods=['POST'])
 def child():
     token=request.headers.get("api-token")
     user=None
     if(token):
-        # comprobar que el token existeix a un usuari
+        # comprovar que el token existeix a un usuari
         user=userDao.getUserByToken(token)
-        
+    
     if not user:
         response = ApiResponse(
-            msg="Access not granted",
+            msg="Acces not granted",
             coderesponse="0",
             data=""
         )
-        return jsonify(asdict(response)), 400
-    
+        return jsonify(asdict(response)),400
+
     data = request.get_json()
-    childs=childDao.getChilds(user['id'])
+    childs=childDao.getChilds(str(user['id']))
     response = ApiResponse(
-        msg="getChilds",
-        coderesponse="1",
-        data=childs
-    )
-    return jsonify(asdict(response)), 200
+            msg="GetChilds",
+            coderesponse="1",
+            data=childs
+        )
+    return jsonify(asdict(response)),200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

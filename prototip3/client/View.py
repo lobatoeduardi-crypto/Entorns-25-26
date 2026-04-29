@@ -35,7 +35,8 @@ class ViewConsole:
                     print("Login Token")
                 case 3:
                     #Childs
-                    print("Childs")
+                    print("View Childs")
+                    self.viewChild(self.token)
                     #self.viewLogin()
                 case 4:
                     # Quit

@@ -79,16 +79,28 @@ class UserDAO:
 
 class ChildDAO:
     
-    def getChilds(self, username):
-        return "TO-DO Get childs "
-    
-    
+    def connectBBDD(self):
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="root",
+            database="tapatapp"
+        )
+        return connection
 
+    def getChilds(self,id_user):
+        con=self.connectBBDD()
+        cursor = con.cursor(dictionary=True)
+        query = "SELECT distinct Child .* FROM RelationUserChild, Child WHERE RelationUserChild.user_id='"
+        query += id_user + "' and RelationUserChild.child_id=Child.id"""
+        cursor.execute(query)
+        
+        return "TO-DO Get Childs"
 
-
+'''
 dao = UserDAO()
-u=dao.getUserByToken("12345")
+u=dao.getUserByToken("056f3df874ecf09e3d68be8cf4902fbec8ac04a6668ca1479b0d563168e75c21")
 print(u)
 u=dao.getUserByToken("12345")
 print(u)
-    
+'''

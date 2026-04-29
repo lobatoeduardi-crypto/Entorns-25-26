@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from dataclasses import dataclass, asdict
-from DaoServer import UserDAO 
+from DaoServer import UserDAO, ChildDAO
 
 @dataclass
 class ApiResponse():
@@ -12,13 +12,13 @@ class ApiResponse():
 userDao = UserDAO()
 childDao = ChildDAO()
 
-
 app = Flask(__name__)
 
 @app.route('/login', methods=['POST'])
 def login():
+    # Existing username/password login
     data = request.get_json()
-    identifier = data.get('username') 
+    identifier = data.get('username') # Username or email
     password = data.get('password')
     user = userDao.login(identifier, password)
     response = ApiResponse(

@@ -1,49 +1,89 @@
 from flask import Flask, request, jsonify
+from dataclasses import dataclass, asdict
 from DaoServer import UserDAO 
 
+@dataclass
+class ApiResponse():
+    msg: str
+    coderesponse: str
+    data: list
+
+# Instantiate DAO
+userDao = UserDAO()
+childDao = ChildDAO()
+
+
 app = Flask(__name__)
-dao = UserDAO()
 
 @app.route('/login', methods=['POST'])
-def login(self, identifier, password):
-    con = self.connectBBDD()
-    cursor = con.cursor(dictionary=True)  
-    query = "SELECT * FROM User WHERE (username = %s OR email = %s) AND password = %s"
-    cursor.execute(query, (identifier, identifier, password))
-    user = cursor.fetchone()
-
+def login():
+    data = request.get_json()
+    identifier = data.get('username') 
+    password = data.get('password')
+    user = userDao.login(identifier, password)
+    response = ApiResponse(
+        msg="login",
+        coderesponse="-1",
+        data=user
+    )
     if user:
-        nuevo_token = self.setTokenUser(user['username'])
-        user['token'] = nuevo_token  
-        
-    cursor.close() 
-    con.close()
-    return user
-    
-    if user:
-        return jsonify({
-            "status": "success",
-            "token": user['token'],
-            "username": user['username']
-        }), 200
+        response = ApiResponse(
+            msg="Authenticated",
+            coderesponse="1",
+            data=user
+        )
     else:
-        return jsonify({"status": "error", "message": "Login incorrecto"}), 401
+        response = ApiResponse(
+            msg="Not authenticated",
+            coderesponse="0",
+            data=""
+        )
+    return jsonify(asdict(response)), 200
 
 @app.route('/getchilds', methods=['GET'])
 def get_childs():
-   
     token = request.args.get('token')
-    
-    if not token:
-        return jsonify({"error": "Falta el token"}), 400
-    
-    childs = dao.getChildrenByToken(token)
+    childs = userDao.getChildrenByToken(token)
     
     if childs:
-        return jsonify(childs), 200
+        response = ApiResponse(
+            msg="Children found",
+            coderesponse="1",
+            data=childs
+        )
     else:
-        return jsonify({"message": "No se encontraron niños o token inválido"}), 404
+        response = ApiResponse(
+            msg="No children found or invalid token",
+            coderesponse="0",
+            data=[]
+        )
+        
+    return jsonify(asdict(response)), 200
+
+@app.route('/child', methods=['POST'])
+def child():
+    token=request.headers.get("apikey")
+    user=None
+    if(token):
+        # comprobar que el token existeix a un usuari
+        user=userDao.getUserByToken(token)
+        
+    if not user:
+        response = ApiResponse(
+            msg="Access not granted",
+            coderesponse="0",
+            data=""
+        )
+        return jsonify(asdict(response)), 400
+    
+    data = request.get_json()
+    childs=childDao.getChilds(user['id'])
+    response = ApiResponse(
+        msg="getChilds",
+        coderesponse="1",
+        data=childs
+    )
+    return jsonify(asdict(response)), 200
 
 if __name__ == '__main__':
-   
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)

@@ -1,51 +1,39 @@
 import requests
-from User import User
+from User import *
+from flask import jsonify
 
 class DaoUserClient:
     base_URL = "http://localhost:5000"
-    
-    def login(self, user):
-        URL_peticio = self.base_URL + "/login"
-        params_POST = {"username": user.username, "password": user.password}
-        
-        try:
-            response = requests.post(URL_peticio, json=params_POST)
-            if response.status_code == 200:
-                res_json = response.json()
-                
-                if str(res_json.get("coderesponse")) == '1':
-                    u_data = res_json.get("data") 
-                    return User(
-                        u_data.get("id"),
-                        u_data.get("username"),
-                        "", 
-                        u_data.get("email"),
-                        u_data.get("idrole")
-                    )
-            return None
-        except:
-            return None
 
-    def get_childs(self, user_id):
-        URL = self.base_URL + "/child"
-        payload = {"id_user": user_id}
-        try:
-            response = requests.post(URL, json=payload)
-            if response.status_code == 200:
-                res_json = response.json()
-                # Devolvemos la lista de niños que está en 'data'
-                return res_json.get("data", [])
-            return []
-        except:
-            return []
-        
-if __name__ == "__main__":
-    daoClient = DaoUserClient()
-    user = User("", "mare", "12345", "", "")
-    resposta = daoClient.login(user)
-    print(resposta)
-        
-        
+    def login(self, user):
+        # Validació paràmetres 
+        # TO-DO
+        # Petició HTTP al Webservice /login
+        URL_peticio= self.base_URL + "/login"
+        params_POST = {
+            "username": user.username,
+            "password": user.password
+        }
+        response = requests.post(URL_peticio, json=params_POST)
+        if response.status_code == 200:
+            user_data_raw = response.json()
+            code_response=user_data_raw['coderesponse']
+            if code_response == '1': # Usuari Validat  (self, id, username, password, email, idrole,token):
+                user_raw=user_data_raw['data']
+                user=User(user_raw['id'], user_raw['username']
+                          , "" ,user_raw['email']
+                          , user_raw['idrole'], user_raw['token'])
+                return user
+            else: 
+                return None
+        else:
+            return None
+'''
+daoClient=DaoUserClient()
+user=User("", "mare", "12345", "", "", "")
+resposta=daoClient.login(user)
+print(resposta)
+'''
 '''Servei Login
 End-point: /login
 Method: POST
@@ -58,16 +46,18 @@ password : (string) password
 Resposta Usuari validat Ok:
 http Response Code: 200 ok
 
-{    
-    "id": 1,
-    "username": "mare",
+{
+  "coderesponse": "1",
+  "data": {
     "email": "prova@gmail.com",
-    "token": "token12345",
-    "idrole": "2",
-    "msg": "Usuari Ok"
-    "coderesponse": "1"
+    "id": 1,
+    "idrole": 1,
+    "password": "12345",
+    "token": "",
+    "username": "mare"
+  },
+  "msg": "Authenticated"
 }
-
 Resposta Usuari No validat: http Response Code: 400 ok
 
 {

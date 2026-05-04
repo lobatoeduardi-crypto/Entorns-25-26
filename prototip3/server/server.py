@@ -50,24 +50,26 @@ def child():
     user=None
     if(token):
         # comprovar que el token existeix a un usuari
-        user=userDao.getUserByToken(token)
+        print(token)
+        u=userDao.getUserByToken(token)
+        print("USER:", u)
     
-    if not user:
+    if u:
+        #data = request.get_json()
+        childs=childDao.getChilds(str(u['id']))
+        response = ApiResponse(
+                msg="GetChilds",
+                coderesponse="1",
+                data=childs
+            )
+        return jsonify(asdict(response)),200
+    else: 
         response = ApiResponse(
             msg="Acces not granted",
             coderesponse="0",
             data=""
         )
         return jsonify(asdict(response)),400
-
-    data = request.get_json()
-    childs=childDao.getChilds(str(user['id']))
-    response = ApiResponse(
-            msg="GetChilds",
-            coderesponse="1",
-            data=childs
-        )
-    return jsonify(asdict(response)),200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

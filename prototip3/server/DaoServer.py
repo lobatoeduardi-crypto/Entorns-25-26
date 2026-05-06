@@ -12,7 +12,7 @@ class UserDAO:
             host="localhost",
             user="root",
             password="root",
-            database="tapatapp"
+            database="TapatApp"
         )
         return connection
      
@@ -84,7 +84,7 @@ class ChildDAO:
             host="localhost",
             user="root",
             password="root",
-            database="tapatapp"
+            database="TapatApp"
         )
         return connection
 
@@ -98,6 +98,21 @@ class ChildDAO:
         cursor.close()
         con.close()
         return  results
+    
+    def getTaps(self, id_user):
+        con = self.connectBBDD()
+        cursor = con.cursor(dictionary=True)
+        query = "SELECT * FROM Tap WHERE user_id = %s"
+        cursor.execute(query, (id_user,))
+        results = cursor.fetchall()
+        cursor.close()
+        con.close()
+        return results
+    
+cdao = ChildDAO()
+datos_taps = cdao.getTaps(1) 
+print("RESULTADO DE LOS TAPS:")
+print(datos_taps)
    
 '''
 cdao=ChildDAO()

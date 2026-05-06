@@ -71,5 +71,26 @@ def child():
         )
         return jsonify(asdict(response)),400
 
+@app.route('/taps', methods=['POST'])
+def get_taps():
+    token = request.headers.get("api-token")
+    user = userDao.getUserByToken(token)
+    
+    if user:
+        taps = childDao.getTaps(user['id'])
+        response = ApiResponse(
+            msg="Taps recuperados",
+            coderesponse="1",
+            data=taps
+        )
+        return jsonify(asdict(response)), 200
+    else:
+        response = ApiResponse(
+            msg="Token inválido o falta el token",
+            coderesponse="0",
+            data=""
+        )
+        return jsonify(asdict(response)), 401
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

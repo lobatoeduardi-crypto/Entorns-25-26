@@ -5,6 +5,7 @@ class User:
         self.password = password
         self.email = email
         self.idrole = idrole 
+        self.token = token
     
     def __str__(self):
         return f"User(ID: {self.id}, Name: {self.username}, Email: {self.email}, Role: {self.idrole})"

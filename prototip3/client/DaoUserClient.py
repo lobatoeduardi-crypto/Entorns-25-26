@@ -62,11 +62,17 @@ class DaoUserClient:
                 return user_raw
         else:
             return None
+    
+    def getTaps(self, token):
+        url = "http://127.0.0.1:5000/taps"
+        headers = {"api-token": token}
+        response = requests.post(url, headers=headers)
+        return response.json()
 
 
 daoClient=DaoUserClient()
 
-#resposta=daoClient.loginToken("20732fb71deb93f1ec163dc3b03aaafddfff76ccfdf45150e94d01eb099eb651")
+#resposta=daoClient.loginToken("056f3df874ecf09e3d68be8cf4902fbec8ac04a6668ca1479b0d563168e75c21")
 #print(resposta)
 
 #user=User("","mare", "mare", "12345", "", "")

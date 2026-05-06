@@ -7,19 +7,19 @@ class ViewConsole:
     token=""
    
     def viewShowMenu(self):
+        print("\n--- MENU ---")
         print("1: Login")
         print("2: Login Token")
         print("3: Child")
-        print("4: Quit")
+        print("4: Taps")
+        print("5: Quit")
         while(True):
             option=input("Enter Option: ")
-            if(option.isdigit):
+            if(option.isdigit()): 
                 optionInt=int(option)
-                if(optionInt >0 and optionInt <5):
+                if(optionInt > 0 and optionInt < 6): 
                     return optionInt
-            
             print("Error: Introdueix una opció correcta")
-
         
     def viewGeneral(self):
         option=-1
@@ -27,20 +27,16 @@ class ViewConsole:
             option=self.viewShowMenu()
             match option:
                 case 1:
-                    #login
                     self.viewLogin()
                 case 2:
-                    #login Token
                     self.viewLoginToken(self.token)
                 case 3:
-                    #Childs
-                    print("View Childs")
                     self.viewChilds(self.token)
-                    #self.viewLogin()
                 case 4:
-                    # Quit
-                    exit()
+                    self.viewTaps(self.token) 
+                case 5:
                     print("Adeu, Gràcies per utilitzar l'aplicació")
+                    exit()
 
 
     def viewChilds(self, token):
@@ -79,6 +75,24 @@ class ViewConsole:
     def viewUserNotAutenticated(self):
         print("View User")
         print("User NOT Authenticated")
+        
+
+    def viewTaps(self, token):
+        print("\n--- VIEW TAPS ---")
+        if not token:
+            print("Error: Primero debes hacer Login (Opción 1) para tener un Token.")
+            return
+
+        resposta_taps = self.daoClient.getTaps(token) 
+        
+        if resposta_taps and 'data' in resposta_taps:
+            print(f"Mensaje: {resposta_taps['msg']}")
+            print("-" * 40)
+            for tap in resposta_taps['data']:
+                print(f"ID Tap: {tap['id']} | Fecha: {tap['init']}")
+            print("-" * 40)
+        else:
+            print("No se han encontrado Taps o el Token no es válido.")
 
 
 viewConsole=ViewConsole()
